@@ -1,4 +1,4 @@
-import  CurrentQuestionZustand  from "./components/CurrentQuestionZustand";
+import  CurrentQuestionZustand from "./components/CurrentQuestionZustand";
 
 
 export const App = () => {
