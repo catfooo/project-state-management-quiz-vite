@@ -1,8 +1,6 @@
-// App.js
 import React from 'react';
 import CurrentQuestionZustand from './components/CurrentQuestionZustand';
 import useQuizStore from './stores/useQuizStore';
-import './App.css'
 
 const App = () => {
   const quizOver = useQuizStore((state) => state.quizOver);
@@ -10,9 +8,12 @@ const App = () => {
   return (
     <div>
       {quizOver ? (
-        <CurrentQuestionZustand /> // Display the summary screen
+        <div className="summary-screen">
+          
+          <CurrentQuestionZustand /> {/* Display the summary screen */}
+        </div>
       ) : (
-        <CurrentQuestionZustand /> // Display the current question
+        <CurrentQuestionZustand /> 
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useQuizStore from '../stores/useQuizStore';
+import './CurrentQuestionZustand.css';
 
 const CurrentQuestionZustand = () => {
   const questions = useQuizStore((state) => state.questions);
@@ -11,7 +12,7 @@ const CurrentQuestionZustand = () => {
   const [showResult, setShowResult] = useState(false);
 
   const quizOver = useQuizStore((state) => state.quizOver);
-  const answers = useQuizStore((state) => state.answers); // Get answers for summary
+  const answers = useQuizStore((state) => state.answers);
 
   if (!question) {
     return <h1>Oh no! I could not find the current question!</h1>;
@@ -32,67 +33,96 @@ const CurrentQuestionZustand = () => {
 
       // After a brief delay, advance to the next question
       setTimeout(() => {
-        useQuizStore.getState().goToNextQuestion();
         setShowResult(false);
         setSelectedAnswerIndex(null);
+
+        // Call the goToNextQuestion method from the store
+        useQuizStore.getState().goToNextQuestion();
+
+        // Check if all questions have been answered
+        if (currentQuestionIndex + 1 === totalQuestions) {
+          // If all questions are answered, set quizOver to true
+          useQuizStore.getState().setQuizOver(true);
+        }
       }, 1500); // Delay for 1.5 seconds (adjust as needed)
     }
   };
 
-  const options = question.options.map((option, index) => (
-    <div key={index}>
-      <input
-        type="radio"
-        name="answer"
-        value={index}
-        onChange={() => handleOptionSelect(index)}
-        checked={selectedAnswerIndex === index}
-        disabled={showResult}
-      />
-      <label>{option}</label>
-    </div>
-  ));
+  const options = question.options.map((option, index) => {
+    const isCorrectAnswer = question.correctAnswerIndex === index;
+    const isSelectedAnswer = selectedAnswerIndex === index;
+
+    // Apply styles based on the selected and correct answers
+    const optionClasses = `option ${showResult && isCorrectAnswer ? 'correct' : ''} ${isSelectedAnswer ? 'selected' : ''}`;
+
+    return (
+      <div key={index} className={optionClasses}>
+        <input
+          type="radio"
+          name="answer"
+          value={index}
+          onChange={() => handleOptionSelect(index)}
+          checked={isSelectedAnswer}
+          disabled={showResult}
+        />
+        <label>{option}</label>
+      </div>
+    );
+  });
+
+  // Display the summary when the quiz is over
+  if (quizOver) {
+    // Calculate the number of correct answers
+    const correctAnswers = answers.filter((answer) => answer.isCorrect);
+
+    return (
+      <div className="summary">
+        <h2>Quiz Summary</h2>
+        <p>Total Questions: {answers.length}</p>
+        <p>Correct Answers: {correctAnswers.length}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="managed-component">
       <h2>Using Zustand</h2>
-      {quizOver ? (
+      <h1>
+        Question {currentQuestionIndex + 1} / {totalQuestions}
+      </h1>
+      <h3>{totalQuestions - currentQuestionIndex - 1} questions left</h3>
+      <h4>Question: {question.questionText}</h4>
+      <form>
+        {options}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          disabled={showResult}
+        >
+          Submit
+        </button>
+      </form>
+      {showResult && (
+        <p>
+          {selectedAnswerIndex === question.correctAnswerIndex
+            ? 'Correct!'
+            : `Wrong. The correct answer is: ${question.options[question.correctAnswerIndex]}`}
+        </p>
+      )}
+  
+      {quizOver && (
         <div className="summary">
-          <h2>Quiz Summary</h2>
-          <p>Total Questions: {totalQuestions}</p>
+          
+          {/* Display the summary when the quiz is over */}
+          <p>Total Questions: {answers.length}</p>
           <p>Correct Answers: {answers.filter((answer) => answer.isCorrect).length}</p>
-          <p>Incorrect Answers: {answers.filter((answer) => !answer.isCorrect).length}</p>
         </div>
-      ) : (
-        <>
-          <h1>
-            Question {currentQuestionIndex + 1} / {totalQuestions}
-          </h1>
-          <h3>{totalQuestions - currentQuestionIndex - 1} questions left</h3>
-          <h4>Question: {question.questionText}</h4>
-          <form>
-            {options}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-              disabled={showResult}
-            >
-              Submit
-            </button>
-          </form>
-          {showResult && (
-            <p>
-              {selectedAnswerIndex === question.correctAnswerIndex
-                ? 'Correct!'
-                : `Wrong. The correct answer is: ${question.options[question.correctAnswerIndex]}`}
-            </p>
-          )}
-        </>
       )}
     </div>
   );
+  
 };
 
 export default CurrentQuestionZustand;

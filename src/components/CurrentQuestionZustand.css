@@ -1,0 +1,16 @@
+/* Add these styles to your CurrentQuestionZustand.css file */
+.option {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .correct {
+    background-color: #c9e9c9; /* Highlight color for correct answer */
+  }
+  
+  .selected {
+    background-color: #fddcdc; /* Highlight color for selected answer */
+  }
+  

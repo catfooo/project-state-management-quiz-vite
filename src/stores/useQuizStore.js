@@ -1,4 +1,3 @@
-// stores/useQuizStore.js
 import create from 'zustand';
 
 const questions = [
@@ -41,33 +40,36 @@ const useQuizStore = create((set) => ({
   quizOver: false,
 
   submitAnswer: (questionId, answerIndex) => {
-    const question = questions.find((q) => q.id === questionId);
-
-    if (!question) {
-      throw new Error(
-        'Could not find the question! Check to make sure you are passing the question id correctly.'
-      );
-    }
-
-    if (question.options[answerIndex] === undefined) {
-      throw new Error(
-        `You passed answerIndex ${answerIndex}, but it is not in the possible answers array!`
-      );
-    }
-
-    set((state) => ({
-      answers: [
-        ...state.answers,
-        {
-          questionId,
-          answerIndex,
-          question,
-          answer: question.options[answerIndex],
-          isCorrect: question.correctAnswerIndex === answerIndex,
-        },
-      ],
-    }));
+    set((state) => {
+      const question = state.questions.find((q) => q.id === questionId);
+  
+      if (!question) {
+        throw new Error(
+          'Could not find the question! Check to make sure you are passing the question id correctly.'
+        );
+      }
+  
+      if (question.options[answerIndex] === undefined) {
+        throw new Error(
+          `You passed answerIndex ${answerIndex}, but it is not in the possible answers array!`
+        );
+      }
+  
+      return {
+        answers: [
+          ...state.answers,
+          {
+            questionId,
+            answerIndex,
+            question,
+            answer: question.options[answerIndex],
+            isCorrect: question.correctAnswerIndex === answerIndex,
+          },
+        ],
+      };
+    });
   },
+  
 
   goToNextQuestion: () => {
     set((state) => {
@@ -85,6 +87,11 @@ const useQuizStore = create((set) => ({
       currentQuestionIndex: 0,
       quizOver: false,
     });
+  },
+  setQuizOver: (value) => {
+    set((state) => ({
+      quizOver: value,
+    }));
   },
 }));
 
