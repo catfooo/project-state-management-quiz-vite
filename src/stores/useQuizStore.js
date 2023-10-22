@@ -1,38 +1,35 @@
-import { create } from "zustand";
+// stores/useQuizStore.js
+import create from 'zustand';
 
 const questions = [
   {
     id: 1,
-    questionText: "Who set the Olympic record for the 100m dash in 2012?",
-    options: ["Usain Bolt", "Justin Gatlin", "Tyson Gay", "Asafa Powell"],
+    questionText: 'Who set the Olympic record for the 100m dash in 2012?',
+    options: ['Usain Bolt', 'Justin Gatlin', 'Tyson Gay', 'Asafa Powell'],
     correctAnswerIndex: 0,
   },
   {
     id: 2,
-    questionText:
-      "When was Michael Phelps last named male World Swimmer of the Year?",
-    options: ["2012", "2014", "2016", "2018"],
+    questionText: 'When was Michael Phelps last named male World Swimmer of the Year?',
+    options: ['2012', '2014', '2016', '2018'],
     correctAnswerIndex: 2,
   },
   {
     id: 3,
-    questionText:
-      "när åt du lunch?",
-    options: ["12", "1", "2", "nej"],
+    questionText: 'när åt du lunch?',
+    options: ['12', '1', '2', 'nej'],
     correctAnswerIndex: 2,
   },
   {
     id: 4,
-    questionText:
-      "varför måste du plugga?",
-    options: ["för att slippa dåliga händelser", "eftersom jag är intresserad", "för att använda kunskaper senare", "jag vet inte"],
+    questionText: 'varför måste du plugga?',
+    options: ['för att slippa dåliga händelser', 'eftersom jag är intresserad', 'för att använda kunskaper senare', 'jag vet inte'],
     correctAnswerIndex: 3,
   },
   {
     id: 5,
-    questionText:
-      "vad är din katts nämn",
-    options: ["katt", "katter", "felix", "hund"],
+    questionText: 'vad är din katts namn?',
+    options: ['katt', 'katter', 'felix', 'hund'],
     correctAnswerIndex: 1,
   },
 ];
@@ -48,7 +45,7 @@ const useQuizStore = create((set) => ({
 
     if (!question) {
       throw new Error(
-        "Could not find question! Check to make sure you are passing the question id correctly."
+        'Could not find the question! Check to make sure you are passing the question id correctly.'
       );
     }
 
@@ -92,4 +89,3 @@ const useQuizStore = create((set) => ({
 }));
 
 export default useQuizStore;
- 
