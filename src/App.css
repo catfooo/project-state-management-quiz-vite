@@ -1,86 +1,64 @@
-/* Style for the quiz container */
-.quiz-app {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Style for question numbering */
-  h1 {
-    font-size: 24px;
-    margin-top: 0;
-  }
-  
-  /* Style for question text */
-  h2 {
-    font-size: 18px;
-    margin-top: 10px;
-  }
-  
-  /* Style for answer options */
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    margin: 10px 0;
-  }
-  
-  button {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  /* Style for correct and incorrect answers */
-  button.correct-answer {
-    background-color: #8bc34a; /* Green color for correct answers */
-  }
-  
-  button.incorrect-answer {
-    background-color: #f44336; /* Red color for incorrect answers */
-  }
-  
-  /* Style for feedback message */
-  p {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  
-  /* Style for the summary screen */
-  .quiz-summary {
-    text-align: center;
-  }
-  
-  /* Style for summary results */
-  .quiz-results {
-    font-size: 18px;
-    margin: 20px 0;
-  }
-  
-  /* Style for restart button */
-  button.restart-button {
-    background-color: #2196f3; /* Blue color for restart button */
-    color: #fff;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  button.restart-button:hover {
-    background-color: #1976d2; /* Darker blue color on hover */
-  }
-  
+/* Add your CSS styles to a separate stylesheet or inline style tags */
+
+/* Styling for the managed-component container */
+.managed-component {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Styling for quiz questions */
+.managed-component h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Styling for question text */
+.managed-component h4 {
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+/* Styling for answer options */
+.managed-component input[type="radio"] {
+  margin-right: 8px;
+}
+
+/* Styling for the Submit button */
+.managed-component button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Styling for the Summary section */
+.summary {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+/* Additional styling for summary text */
+.summary h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Styling for summary data */
+.summary p {
+  font-size: 18px;
+  margin: 10px 0;
+}

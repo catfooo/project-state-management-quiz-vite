@@ -2,6 +2,7 @@
 import React from 'react';
 import CurrentQuestionZustand from './components/CurrentQuestionZustand';
 import useQuizStore from './stores/useQuizStore';
+import './App.css'
 
 const App = () => {
   const quizOver = useQuizStore((state) => state.quizOver);
