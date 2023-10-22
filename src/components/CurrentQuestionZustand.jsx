@@ -1,8 +1,11 @@
+// CurrentQuestionZustand.jsx
 import React, { useState, useEffect } from 'react';
 import useQuizStore from '../stores/useQuizStore';
 import './CurrentQuestionZustand.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const CurrentQuestionZustand = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const questions = useQuizStore((state) => state.questions);
   const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
   const question = questions[currentQuestionIndex];
@@ -10,13 +13,12 @@ const CurrentQuestionZustand = () => {
 
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [showResult, setShowResult] = useState(false);
-  const [progress, setProgress] = useState(0); // Added progress state
+  const [progress, setProgress] = useState(0);
 
   const quizOver = useQuizStore((state) => state.quizOver);
   const answers = useQuizStore((state) => state.answers);
 
   useEffect(() => {
-    // Calculate the progress percentage
     const newProgress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
     setProgress(newProgress);
   }, [currentQuestionIndex, totalQuestions]);
@@ -31,27 +33,21 @@ const CurrentQuestionZustand = () => {
 
   const handleSubmit = () => {
     if (selectedAnswerIndex !== null) {
-      // Check if the selected answer index is correct
       const isCorrect = selectedAnswerIndex === question.correctAnswerIndex;
       useQuizStore.getState().submitAnswer(question.id, selectedAnswerIndex);
 
-      // Display the result
       setShowResult(true);
 
-      // After a brief delay, advance to the next question
       setTimeout(() => {
         setShowResult(false);
         setSelectedAnswerIndex(null);
 
-        // Call the goToNextQuestion method from the store
         useQuizStore.getState().goToNextQuestion();
 
-        // Check if all questions have been answered
         if (currentQuestionIndex + 1 === totalQuestions) {
-          // If all questions are answered, set quizOver to true
           useQuizStore.getState().setQuizOver(true);
         }
-      }, 1500); // Delay for 1.5 seconds (adjust as needed)
+      }, 1500);
     }
   };
 
@@ -59,7 +55,6 @@ const CurrentQuestionZustand = () => {
     const isCorrectAnswer = question.correctAnswerIndex === index;
     const isSelectedAnswer = selectedAnswerIndex === index;
 
-    // Apply styles based on the selected and correct answers
     const optionClasses = `option ${showResult && isCorrectAnswer ? 'correct' : ''} ${isSelectedAnswer ? 'selected' : ''}`;
 
     return (
@@ -72,23 +67,16 @@ const CurrentQuestionZustand = () => {
           checked={isSelectedAnswer}
           disabled={showResult}
         />
-        <label>{option}</label>
+        <label>
+          {option}
+        </label>
       </div>
     );
   });
 
-  // Display the summary when the quiz is over
   if (quizOver) {
-    // Calculate the number of correct answers
-    const correctAnswers = answers.filter((answer) => answer.isCorrect);
-
-    return (
-      <div className="summary">
-        <h2>Quiz Summary</h2>
-        <p>Total Questions: {answers.length}</p>
-        <p>Correct Answers: {correctAnswers.length}</p>
-      </div>
-    );
+    // Navigate to the summary page when the quiz is over
+    navigate('/summary');
   }
 
   return (
@@ -100,6 +88,9 @@ const CurrentQuestionZustand = () => {
         </div>
       </div>
       <h4>Question: {question.questionText}</h4>
+      {question.image && (
+        <img src={question.image} alt="Question" className="question-image" />
+      )}
       <form>
         {options}
         <button
@@ -118,14 +109,6 @@ const CurrentQuestionZustand = () => {
             ? 'Correct!'
             : `Wrong. The correct answer is: ${question.options[question.correctAnswerIndex]}`}
         </p>
-      )}
-
-      {quizOver && (
-        <div className="summary">
-          {/* Display the summary when the quiz is over */}
-          <p>Total Questions: {answers.length}</p>
-          <p>Correct Answers: {answers.filter((answer) => answer.isCorrect).length}</p>
-        </div>
       )}
     </div>
   );

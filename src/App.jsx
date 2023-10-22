@@ -1,21 +1,17 @@
+// Import necessary modules
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CurrentQuestionZustand from './components/CurrentQuestionZustand';
-import useQuizStore from './stores/useQuizStore';
+import QuizSummary from './components/QuizSummary';
 
 const App = () => {
-  const quizOver = useQuizStore((state) => state.quizOver);
-
   return (
-    <div>
-      {quizOver ? (
-        <div className="summary-screen">
-          
-          <CurrentQuestionZustand /> {/* Display the summary screen */}
-        </div>
-      ) : (
-        <CurrentQuestionZustand /> 
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<CurrentQuestionZustand />} />
+        <Route path="/summary" element={<QuizSummary />} />
+      </Routes>
+    </Router>
   );
 };
 

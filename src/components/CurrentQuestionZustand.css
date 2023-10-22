@@ -35,4 +35,15 @@
   font-weight: bold;
 }
 
+/* CurrentQuestionZustand.css */
+
+.question-image {
+  max-width: 100%; /* Adjust the maximum width as needed */
+  height: auto;    /* Automatically adjust the height to maintain aspect ratio */
+  display: block;  /* Ensure the image is treated as a block element */
+  margin: 0 auto;  /* Center the image horizontally */
+  margin-top: 20px; /* Add spacing at the top if needed */
+}
+
+
   
