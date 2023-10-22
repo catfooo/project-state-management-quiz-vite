@@ -1,77 +1,81 @@
 import React, { useState } from "react";
-import useQuizStore from "../stores/useQuizStore";
+import useQuizStore from "../stores/useQuizStore"; // Adjust the path accordingly
 
-export const CurrentQuestionZustand = () => {
+const CurrentQuestionZustand = () => {
   const questions = useQuizStore((state) => state.questions);
-  const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
+  const currentQuestionIndex = useQuizStore(
+    (state) => state.currentQuestionIndex
+  );
   const question = questions[currentQuestionIndex];
-  const quizOver = useQuizStore((state) => state.quizOver);
-  const goToNextQuestion = useQuizStore((state) => state.goToNextQuestion);
-  const submitAnswer = useQuizStore((state) => state.submitAnswer);
 
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-    setIsAnswerCorrect(null); // Reset the correctness message when the user selects a new option.
-  };
-
-  const handleNextQuestion = () => {
-    if (selectedOption !== null && !quizOver) {
-      const selectedOptionIndex = parseInt(selectedOption, 10);
-      const isCorrect = question.correctAnswerIndex === selectedOptionIndex;
-
-      // Submit the selected option as the answer
-      submitAnswer(question.id, selectedOptionIndex);
-
-      // Set the correctness message
-      setIsAnswerCorrect(isCorrect);
-
-      // Move to the next question
-      setSelectedOption(null);
-      goToNextQuestion();
-    }
-  };
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [showResult, setShowResult] = useState(false);
 
   if (!question) {
     return <h1>Oh no! I could not find the current question!</h1>;
   }
 
+  const handleOptionSelect = (index) => {
+    setSelectedAnswerIndex(index);
+  };
+
+  const handleSubmit = () => {
+    if (selectedAnswerIndex !== null) {
+      // Check if the selected answer index is correct
+      const isCorrect = selectedAnswerIndex === question.correctAnswerIndex;
+      useQuizStore.getState().submitAnswer(question.id, selectedAnswerIndex);
+
+      // Display the result
+      setShowResult(true);
+
+      // After a brief delay, advance to the next question
+      setTimeout(() => {
+        useQuizStore.getState().goToNextQuestion();
+        setShowResult(false);
+        setSelectedAnswerIndex(null);
+      }, 1500); // Delay for 1.5 seconds (adjust as needed)
+    }
+  };
+
+  const options = question.options.map((option, index) => (
+    <div key={index}>
+      <input
+        type="radio"
+        name="answer"
+        value={index}
+        onChange={() => handleOptionSelect(index)}
+        checked={selectedAnswerIndex === index} // Check if this option is selected
+        disabled={showResult}
+      />
+      <label>{option}</label>
+    </div>
+  ));
+
   return (
     <div className="managed-component">
       <h2>Using Zustand</h2>
       <h1>Question: {question.questionText}</h1>
-      <ul>
-        {question.options.map((option, index) => (
-          <li key={index}>
-            <label>
-              <input
-                type="radio"
-                name="answerOptions"
-                value={index}
-                checked={selectedOption === index.toString()}
-                onChange={handleOptionChange}
-              />
-              {option}
-            </label>
-          </li>
-        ))}
-      </ul>
-      {selectedOption !== null && (
+      <form>
+        {options}
+        <button
+          onClick={(e) => {
+            e.preventDefault(); // Prevent the form submission
+            handleSubmit(); // Manually trigger the submit logic
+          }}
+          disabled={showResult}
+        >
+          Submit
+        </button>
+      </form>
+      {showResult && (
         <p>
-          {isAnswerCorrect
-            ? "Correct! Well done!"
-            : "Incorrect. Please try again."}
+          {selectedAnswerIndex === question.correctAnswerIndex
+            ? "Correct!"
+            : `Wrong. The correct answer is: ${question.options[question.correctAnswerIndex]}`}
         </p>
       )}
-      <div>
-        {quizOver ? (
-          <p>Quiz is over!</p>
-        ) : (
-          <button onClick={handleNextQuestion}>Next Question</button>
-        )}
-      </div>
     </div>
   );
 };
+
+export default CurrentQuestionZustand;

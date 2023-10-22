@@ -16,21 +16,24 @@ const questions = [
   },
   {
     id: 3,
-    questionText: "Vilka mat älskar katter mest",
-    options: ["fiskar", "kycklingar", "oster", "frukter"],
-    correctAnswerIndex: 1,
+    questionText:
+      "när åt du lunch?",
+    options: ["12", "1", "2", "nej"],
+    correctAnswerIndex: 2,
   },
   {
     id: 4,
-    questionText: "hur länge bodde din katt",
-    options: ["15 år", "20 år", "25 år", "mer än 25 år"],
+    questionText:
+      "varför måste du plugga?",
+    options: ["för att slippa dåliga händelser", "eftersom jag är intresserad", "för att använda kunskaper senare", "jag vet inte"],
     correctAnswerIndex: 3,
   },
   {
     id: 5,
-    questionText: "hade din katt barn, om so, hur många?",
-    options: ["nej", "mindre 5", "5-15", "mer än 15"],
-    correctAnswerIndex: 2,
+    questionText:
+      "vad är din katts nämn",
+    options: ["katt", "katter", "felix", "hund"],
+    correctAnswerIndex: 1,
   },
 ];
 
@@ -55,8 +58,6 @@ const useQuizStore = create((set) => ({
       );
     }
 
-    const isCorrect = question.correctAnswerIndex === answerIndex; // Check if the answer is correct
-
     set((state) => ({
       answers: [
         ...state.answers,
@@ -65,8 +66,7 @@ const useQuizStore = create((set) => ({
           answerIndex,
           question,
           answer: question.options[answerIndex],
-          // isCorrect: question.correctAnswerIndex === answerIndex,
-          isCorrect,
+          isCorrect: question.correctAnswerIndex === answerIndex,
         },
       ],
     }));
@@ -92,3 +92,4 @@ const useQuizStore = create((set) => ({
 }));
 
 export default useQuizStore;
+ 
